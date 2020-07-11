@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7174138851146005793}
   - component: {fileID: 7624251757071234144}
   - component: {fileID: 114014385600638374}
-  - component: {fileID: 114547231373687476}
+  - component: {fileID: 114965103862148610}
   m_Layer: 0
   m_Name: leftContPrefab
   m_TagString: Untagged
@@ -127,7 +127,7 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114547231373687476
+--- !u!114 &114965103862148610
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

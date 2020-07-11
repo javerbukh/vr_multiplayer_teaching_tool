@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using InputTracking = UnityEngine.XR.InputTracking;
+using Node = UnityEngine.XR.XRNode;
 
 public class PlayerScript : NetworkBehaviour
 {
     public GameObject CubePrefab;
     private GameObject cube;
 
-    private GameObject rightContSource;
-    private GameObject leftContSource;
-    private GameObject headsetSource;
+    public GameObject cameraRig;
 
     public GameObject rightContPrefab;
     public GameObject leftContPrefab;
@@ -48,23 +48,23 @@ public class PlayerScript : NetworkBehaviour
     [Command]
     public void CmdControllerPositionSync()
     {
-        headsetObj.transform.rotation = headsetSource.transform.parent.rotation;
-        headsetObj.transform.position = headsetSource.transform.position;
+        headsetObj.transform.localRotation = InputTracking.GetLocalRotation(Node.Head);
+        rightContObj.transform.localRotation = InputTracking.GetLocalRotation(Node.RightHand);
+        leftContObj.transform.localRotation = InputTracking.GetLocalRotation(Node.LeftHand);
 
-        rightContObj.transform.position = rightContSource.transform.position;
-        rightContObj.transform.rotation = rightContSource.transform.rotation;
-
-        leftContObj.transform.position = leftContSource.transform.position;
-        leftContObj.transform.rotation = leftContSource.transform.rotation;
+        headsetObj.transform.localPosition = InputTracking.GetLocalPosition(Node.Head);
+        rightContObj.transform.localPosition = InputTracking.GetLocalPosition(Node.RightHand);
+        leftContObj.transform.localPosition = InputTracking.GetLocalPosition(Node.LeftHand);
     }
 
     void Start()
     {
         if (isLocalPlayer)
         {
-            headsetSource = GameObject.Find("Camera");
-            rightContSource = GameObject.Find("Controller (right)");
-            leftContSource = GameObject.Find("Controller (left)");
+
+            //headsetSource = GameObject.Find("Camera");
+            //rightContSource = GameObject.Find("Controller (right)");
+            //leftContSource = GameObject.Find("Controller (left)");
 
             CmdInstantiteHeadAndController();
         }
