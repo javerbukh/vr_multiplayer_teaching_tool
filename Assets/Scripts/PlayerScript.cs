@@ -48,19 +48,19 @@ public class PlayerScript : NetworkBehaviour
     [Command]
     public void CmdControllerPositionSync()
     {
-        headsetObj.transform.localRotation = headsetSource.transform.parent.localRotation;
+        headsetObj.transform.rotation = headsetSource.transform.parent.rotation;
         headsetObj.transform.position = headsetSource.transform.position;
 
-        rightContObj.transform.localPosition = rightContSource.transform.position;
-        rightContObj.transform.localRotation = rightContSource.transform.localRotation;
+        rightContObj.transform.position = rightContSource.transform.position;
+        rightContObj.transform.rotation = rightContSource.transform.rotation;
 
-        leftContObj.transform.localPosition = leftContSource.transform.position;
-        leftContObj.transform.localRotation = leftContSource.transform.localRotation;
+        leftContObj.transform.position = leftContSource.transform.position;
+        leftContObj.transform.rotation = leftContSource.transform.rotation;
     }
 
     void Start()
     {
-        if (!isLocalPlayer)
+        if (isLocalPlayer)
         {
             headsetSource = GameObject.Find("Camera");
             rightContSource = GameObject.Find("Controller (right)");
