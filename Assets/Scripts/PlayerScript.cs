@@ -10,14 +10,12 @@ public class PlayerScript : NetworkBehaviour
     public GameObject CubePrefab;
     private GameObject cube;
 
-    public GameObject cameraRig;
-
+    private GameObject headsetSource;
+    private GameObject rightContSoure;
+    private GameObject leftContSource;
 
     private GameObject headsetObj;
-
-
     private GameObject rightContObj;
-
     private GameObject leftContObj;
 
 
@@ -39,6 +37,10 @@ public class PlayerScript : NetworkBehaviour
         //rightContObj = (GameObject)Instantiate(rightContPrefab);
         //leftContObj = (GameObject)Instantiate(leftContPrefab);
 
+        headsetSource = GameObject.Find("Camera");
+        rightContSoure = GameObject.Find("Controller (left)");
+        leftContSource = GameObject.Find("Controller (right)");
+
         headsetObj = gameObject.transform.Find("headsetPrefab").gameObject;
         rightContObj = gameObject.transform.Find("rightContPrefab").gameObject;
         leftContObj = gameObject.transform.Find("leftContPrefab").gameObject;
@@ -46,9 +48,9 @@ public class PlayerScript : NetworkBehaviour
 
 
         //// spawn the bullet on the clients
-        NetworkServer.Spawn(headsetObj);
-        NetworkServer.Spawn(rightContObj);
-        NetworkServer.Spawn(leftContObj);
+        //NetworkServer.Spawn(headsetObj);
+        //NetworkServer.Spawn(rightContObj);
+        //NetworkServer.Spawn(leftContObj);
 
         CmdControllerPositionSync();
     }
@@ -56,13 +58,14 @@ public class PlayerScript : NetworkBehaviour
     [Command]
     public void CmdControllerPositionSync()
     {
-        headsetObj.transform.localRotation = InputTracking.GetLocalRotation(Node.Head);
-        rightContObj.transform.localRotation = InputTracking.GetLocalRotation(Node.RightHand);
-        leftContObj.transform.localRotation = InputTracking.GetLocalRotation(Node.LeftHand);
 
-        headsetObj.transform.localPosition = InputTracking.GetLocalPosition(Node.Head);
-        rightContObj.transform.localPosition = InputTracking.GetLocalPosition(Node.RightHand);
-        leftContObj.transform.localPosition = InputTracking.GetLocalPosition(Node.LeftHand);
+        headsetObj.transform.localRotation = headsetSource.transform.rotation;
+        rightContObj.transform.localRotation = headsetSource.transform.rotation;
+        leftContObj.transform.localRotation = headsetSource.transform.rotation;
+
+        headsetObj.transform.localPosition = headsetSource.transform.position;
+        rightContObj.transform.localPosition = headsetSource.transform.position;
+        leftContObj.transform.localPosition = headsetSource.transform.position;
     }
 
     void Start()
