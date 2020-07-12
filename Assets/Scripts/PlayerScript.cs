@@ -12,13 +12,13 @@ public class PlayerScript : NetworkBehaviour
 
     public GameObject cameraRig;
 
-    public GameObject rightContPrefab;
-    public GameObject leftContPrefab;
-    public GameObject headsetPrefab;
+
+    private GameObject headsetObj;
+
 
     private GameObject rightContObj;
+
     private GameObject leftContObj;
-    private GameObject headsetObj;
 
 
     [Command]
@@ -35,14 +35,22 @@ public class PlayerScript : NetworkBehaviour
     [Command]
     void CmdInstantiteHeadAndController()
     {
-        headsetObj = (GameObject)Instantiate(headsetPrefab);
-        rightContObj = (GameObject)Instantiate(rightContPrefab);
-        leftContObj = (GameObject)Instantiate(leftContPrefab);
+        //headsetObj = (GameObject)Instantiate(headsetPrefab);
+        //rightContObj = (GameObject)Instantiate(rightContPrefab);
+        //leftContObj = (GameObject)Instantiate(leftContPrefab);
 
-        // spawn the bullet on the clients
+        headsetObj = gameObject.transform.Find("headsetPrefab").gameObject;
+        rightContObj = gameObject.transform.Find("rightContPrefab").gameObject;
+        leftContObj = gameObject.transform.Find("leftContPrefab").gameObject;
+
+
+
+        //// spawn the bullet on the clients
         NetworkServer.Spawn(headsetObj);
         NetworkServer.Spawn(rightContObj);
         NetworkServer.Spawn(leftContObj);
+
+        CmdControllerPositionSync();
     }
 
     [Command]
@@ -61,16 +69,21 @@ public class PlayerScript : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-
+            CmdInstantiteHeadAndController();
             //headsetSource = GameObject.Find("Camera");
             //rightContSource = GameObject.Find("Controller (right)");
             //leftContSource = GameObject.Find("Controller (left)");
 
-            CmdInstantiteHeadAndController();
+
         }
 
         //headset = Camera.main.gameObject;
     }
+    //public override void OnStartLocalPlayer()
+    //{
+    //    base.OnStartLocalPlayer();
+    //    CmdInstantiteHeadAndController();
+    //}
 
     // Update is called once per frame
     void Update()
@@ -79,10 +92,9 @@ public class PlayerScript : NetworkBehaviour
         {
             return;
         }
-        else
-        {
-            CmdControllerPositionSync();
-        }
+        
+        CmdControllerPositionSync();
+
         if (Input.GetKeyDown("space"))
         {
             // GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
