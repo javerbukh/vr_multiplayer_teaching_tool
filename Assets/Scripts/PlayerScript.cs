@@ -8,6 +8,11 @@ using Node = UnityEngine.XR.XRNode;
 public class PlayerScript : NetworkBehaviour
 {
     public GameObject CubePrefab;
+
+    public GameObject headsetPrefab;
+    public GameObject rightContPrefab;
+    public GameObject leftContPrefab;
+
     private GameObject cube;
 
     private GameObject headsetSource;
@@ -33,24 +38,24 @@ public class PlayerScript : NetworkBehaviour
     [Command]
     void CmdInstantiteHeadAndController()
     {
-        //headsetObj = (GameObject)Instantiate(headsetPrefab);
-        //rightContObj = (GameObject)Instantiate(rightContPrefab);
-        //leftContObj = (GameObject)Instantiate(leftContPrefab);
+        headsetObj = Instantiate(headsetPrefab);
+        rightContObj = Instantiate(rightContPrefab);
+        leftContObj = Instantiate(leftContPrefab);
 
         headsetSource = GameObject.Find("Camera");
         rightContSoure = GameObject.Find("Controller (left)");
         leftContSource = GameObject.Find("Controller (right)");
 
-        headsetObj = gameObject.transform.Find("headsetPrefab").gameObject;
-        rightContObj = gameObject.transform.Find("rightContPrefab").gameObject;
-        leftContObj = gameObject.transform.Find("leftContPrefab").gameObject;
+        //headsetObj = gameObject.transform.Find("headsetPrefab").gameObject;
+        //rightContObj = gameObject.transform.Find("rightContPrefab").gameObject;
+        //leftContObj = gameObject.transform.Find("leftContPrefab").gameObject;
 
 
 
         //// spawn the bullet on the clients
-        //NetworkServer.Spawn(headsetObj);
-        //NetworkServer.Spawn(rightContObj);
-        //NetworkServer.Spawn(leftContObj);
+        NetworkServer.Spawn(headsetObj);
+        NetworkServer.Spawn(rightContObj);
+        NetworkServer.Spawn(leftContObj);
 
         CmdControllerPositionSync();
     }
