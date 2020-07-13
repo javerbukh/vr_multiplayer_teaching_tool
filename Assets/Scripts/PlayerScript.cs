@@ -16,7 +16,7 @@ public class PlayerScript : NetworkBehaviour
     private GameObject cube;
 
     private GameObject headsetSource;
-    private GameObject rightContSoure;
+    private GameObject rightContSource;
     private GameObject leftContSource;
 
     private GameObject headsetObj;
@@ -42,9 +42,15 @@ public class PlayerScript : NetworkBehaviour
         rightContObj = Instantiate(rightContPrefab);
         leftContObj = Instantiate(leftContPrefab);
 
-        headsetSource = GameObject.Find("Camera");
-        rightContSoure = GameObject.Find("Controller (left)");
-        leftContSource = GameObject.Find("Controller (right)");
+        //headsetSource = GameObject.Find("Camera");
+        //rightContSource = GameObject.Find("Controller (left)");
+        //leftContSource = GameObject.Find("Controller (right)");
+
+        //headsetSource = gameObject.transform.Find("Camera").gameObject;
+        //rightContSource = gameObject.transform.Find("Controller (left)").gameObject;
+        //leftContSource = gameObject.transform.Find("Controller (right)").gameObject;
+
+
 
         //headsetObj = gameObject.transform.Find("headsetPrefab").gameObject;
         //rightContObj = gameObject.transform.Find("rightContPrefab").gameObject;
@@ -57,7 +63,6 @@ public class PlayerScript : NetworkBehaviour
         NetworkServer.Spawn(rightContObj);
         NetworkServer.Spawn(leftContObj);
 
-        CmdControllerPositionSync();
     }
 
     [Command]
@@ -65,12 +70,20 @@ public class PlayerScript : NetworkBehaviour
     {
 
         headsetObj.transform.localRotation = headsetSource.transform.rotation;
-        rightContObj.transform.localRotation = headsetSource.transform.rotation;
-        leftContObj.transform.localRotation = headsetSource.transform.rotation;
+        rightContObj.transform.localRotation = rightContSource.transform.rotation;
+        leftContObj.transform.localRotation = leftContSource.transform.rotation;
 
         headsetObj.transform.localPosition = headsetSource.transform.position;
-        rightContObj.transform.localPosition = headsetSource.transform.position;
-        leftContObj.transform.localPosition = headsetSource.transform.position;
+        rightContObj.transform.localPosition = rightContSource.transform.position;
+        leftContObj.transform.localPosition = leftContSource.transform.position;
+    }
+
+    [Command]
+    public void CmdMovePlayer()
+    {
+        Debug.Log("Moving forward!");
+        transform.position += transform.forward;
+        Debug.Log(Node.Head);
     }
 
     void Start()
@@ -109,7 +122,11 @@ public class PlayerScript : NetworkBehaviour
 
             CmdMakeBox();
 
+        }
 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            CmdMovePlayer();
         }
     }
 
