@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8407698505958271799}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -89,7 +89,7 @@ SphereCollider:
   m_GameObject: {fileID: 8407698505958271799}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -114,6 +114,9 @@ MonoBehaviour:
   _components:
   - componentID: 1
     component: {fileID: 114097306707315050}
+    componentIDHasBeenUsed: 1
+  - componentID: 2
+    component: {fileID: 0}
     componentIDHasBeenUsed: 1
   _parentView: {fileID: 0}
   _childViews: []
