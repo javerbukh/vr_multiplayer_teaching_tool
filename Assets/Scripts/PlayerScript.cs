@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using InputTracking = UnityEngine.XR.InputTracking;
+using Node = UnityEngine.XR.XRNode;
 
 public class PlayerScript : NetworkBehaviour
 {
     public GameObject CubePrefab;
-    private GameObject cube;
 
-    private GameObject rightContSource;
-    private GameObject leftContSource;
-    private GameObject headsetSource;
-
+    public GameObject headsetPrefab;
     public GameObject rightContPrefab;
     public GameObject leftContPrefab;
-    public GameObject headsetPrefab;
 
+    private GameObject cube;
+
+    private GameObject headsetSource;
+    private GameObject rightContSource;
+    private GameObject leftContSource;
+
+    private GameObject headsetObj;
     private GameObject rightContObj;
     private GameObject leftContObj;
-    private GameObject headsetObj;
 
 
     [Command]
@@ -35,42 +38,73 @@ public class PlayerScript : NetworkBehaviour
     [Command]
     void CmdInstantiteHeadAndController()
     {
-        headsetObj = (GameObject)Instantiate(headsetPrefab);
-        rightContObj = (GameObject)Instantiate(rightContPrefab);
-        leftContObj = (GameObject)Instantiate(leftContPrefab);
+        headsetObj = Instantiate(headsetPrefab);
+        rightContObj = Instantiate(rightContPrefab);
+        leftContObj = Instantiate(leftContPrefab);
 
-        // spawn the bullet on the clients
+        //headsetSource = GameObject.Find("Camera");
+        //rightContSource = GameObject.Find("Controller (left)");
+        //leftContSource = GameObject.Find("Controller (right)");
+
+        //headsetSource = gameObject.transform.Find("Camera").gameObject;
+        //rightContSource = gameObject.transform.Find("Controller (left)").gameObject;
+        //leftContSource = gameObject.transform.Find("Controller (right)").gameObject;
+
+
+
+        //headsetObj = gameObject.transform.Find("headsetPrefab").gameObject;
+        //rightContObj = gameObject.transform.Find("rightContPrefab").gameObject;
+        //leftContObj = gameObject.transform.Find("leftContPrefab").gameObject;
+
+
+
+        //// spawn the bullet on the clients
         NetworkServer.Spawn(headsetObj);
         NetworkServer.Spawn(rightContObj);
         NetworkServer.Spawn(leftContObj);
+
     }
 
     [Command]
     public void CmdControllerPositionSync()
     {
-        headsetObj.transform.rotation = headsetSource.transform.parent.rotation;
-        headsetObj.transform.position = headsetSource.transform.position;
 
-        rightContObj.transform.position = rightContSource.transform.position;
-        rightContObj.transform.rotation = rightContSource.transform.rotation;
+        headsetObj.transform.localRotation = headsetSource.transform.rotation;
+        rightContObj.transform.localRotation = rightContSource.transform.rotation;
+        leftContObj.transform.localRotation = leftContSource.transform.rotation;
 
-        leftContObj.transform.position = leftContSource.transform.position;
-        leftContObj.transform.rotation = leftContSource.transform.rotation;
+        headsetObj.transform.localPosition = headsetSource.transform.position;
+        rightContObj.transform.localPosition = rightContSource.transform.position;
+        leftContObj.transform.localPosition = leftContSource.transform.position;
+    }
+
+    [Command]
+    public void CmdMovePlayer()
+    {
+        Debug.Log("Moving forward!");
+        transform.position += transform.forward;
+        Debug.Log(Node.Head);
     }
 
     void Start()
     {
         if (isLocalPlayer)
         {
-            headsetSource = GameObject.Find("Camera");
-            rightContSource = GameObject.Find("Controller (right)");
-            leftContSource = GameObject.Find("Controller (left)");
-
             CmdInstantiteHeadAndController();
+            //headsetSource = GameObject.Find("Camera");
+            //rightContSource = GameObject.Find("Controller (right)");
+            //leftContSource = GameObject.Find("Controller (left)");
+
+
         }
 
         //headset = Camera.main.gameObject;
     }
+    //public override void OnStartLocalPlayer()
+    //{
+    //    base.OnStartLocalPlayer();
+    //    CmdInstantiteHeadAndController();
+    //}
 
     // Update is called once per frame
     void Update()
@@ -79,17 +113,20 @@ public class PlayerScript : NetworkBehaviour
         {
             return;
         }
-        else
-        {
-            CmdControllerPositionSync();
-        }
+        
+        CmdControllerPositionSync();
+
         if (Input.GetKeyDown("space"))
         {
             // GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
             CmdMakeBox();
 
+        }
 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            CmdMovePlayer();
         }
     }
 

@@ -12,6 +12,7 @@
 
 /[Aa]ssets/SteamVR*
 /[Aa]ssets/Streaming*
+/[Aa]ssets/Normal/*
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta

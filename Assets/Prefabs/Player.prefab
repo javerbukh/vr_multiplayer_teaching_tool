@@ -102,9 +102,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CubePrefab: {fileID: 3574285837627647006, guid: d293abe9fef81d0489c54e78568178e5,
     type: 3}
+  headsetPrefab: {fileID: 1508333335381400568, guid: da0d86d2acd03a54784a49bfe55556f9,
+    type: 3}
   rightContPrefab: {fileID: 9082033798862357126, guid: 63bce7ec5e86d3545b93570465e6ccc6,
     type: 3}
   leftContPrefab: {fileID: 1054983381420427929, guid: 010e011e2455a3d499236303b35f9d03,
-    type: 3}
-  headsetPrefab: {fileID: 4835056613188856962, guid: ddf8e635b9c50c040b3bdcdaceab08dc,
     type: 3}
